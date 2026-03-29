@@ -2,7 +2,6 @@ def emotion_detector(text_to_analyze):
     import requests
     import json
 
-    # 🔴 STEP 1: HANDLE BLANK INPUT (VERY IMPORTANT)
     if text_to_analyze is None or text_to_analyze.strip() == "":
         return {
             'anger': None,
@@ -13,13 +12,20 @@ def emotion_detector(text_to_analyze):
             'dominant_emotion': None
         }
 
-    url = "YOUR_API_URL"
-    headers = {"Content-Type": "application/json"}
-    data = {"text": text_to_analyze}
+    url = "https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict"
+
+    headers = {
+        "grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"
+    }
+
+    data = {
+        "raw_document": {
+            "text": text_to_analyze
+        }
+    }
 
     response = requests.post(url, json=data, headers=headers)
 
-    # 🔴 STEP 2: HANDLE API ERROR
     if response.status_code == 400:
         return {
             'anger': None,
